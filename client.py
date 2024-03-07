@@ -1,6 +1,7 @@
 import socket
 import sounddevice as sd
 import numpy as np
+import sys
 
 def audio_callback(outdata, frames, time, status):
     # This function is called whenever the audio device needs more data to play
@@ -18,12 +19,16 @@ def audio_callback(outdata, frames, time, status):
         print("Connection to the server lost.")
         exit()
 
-
-def start_client():
+def start_client(server_ip):
     global server_socket
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.connect(('localhost', 12345))
+    
+    try:
+        server_socket.connect((server_ip, 3000))
+    except socket.error as e:
+        print(f"Error connecting to the server: {e}")
+        exit()
 
     # Start a new thread for audio communication
     audio_stream = sd.OutputStream(callback=audio_callback)
@@ -38,4 +43,9 @@ def start_client():
         audio_stream.stop()
 
 if __name__ == "__main__":
-    start_client()
+    if len(sys.argv) != 2:
+        print("Usage: python client.py <server_ip>")
+        sys.exit(1)
+
+    server_ip = sys.argv[1]
+    start_client(server_ip)

@@ -13,7 +13,7 @@ def audio_callback(indata, frames, time, status):
 
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('localhost', 12345))
+    server.bind(('localhost', 3000))
     server.listen(5)
 
     print("Server is listening for incoming connections...")
