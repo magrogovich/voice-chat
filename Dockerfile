@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Expose the port that your server is running on
-EXPOSE 12345
+EXPOSE 3000
 
 # Command to run your application
 CMD ["python", "server.py"]
